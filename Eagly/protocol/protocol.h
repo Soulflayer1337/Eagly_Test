@@ -3,11 +3,9 @@
 #include <QObject>
 #include <QString>
 
-#include "../interfaces/isendaudio.h"
-#include "../interfaces/isendpicture.h"
 #include "../interfaces/isendtext.h"
-#include "../interfaces/icall.h"
-#include "../interfaces/ivideocall.h"
+#include "../interfaces/iauth.h"
+#include "../interfaces/igetfriends.h"
 
 class Protocol : public QObject
 {
@@ -22,17 +20,15 @@ signals:
     void notSupported(QString protocolName);
 
 public slots:
-    void sendAudio();
-    void sendPicture();
-    void sendText();
-    void call();
-    void videoCall();
+    void sendText(QString &id, QString &text);
+    void getFriends(QList<QPair<QString, QString> > &friends);
+
 private:
     QObject *protocol;
 
-    ISendAudio *audioSender;
-    ISendPicture *pictureSender;
     ISendText *textSender;
-    ICall *caller;
-    IVideoCall *videoCaller;
+    IGetFriends *friendsGetter;
+    IAuth *authenticator;
+
+    void auth();
 };

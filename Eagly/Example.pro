@@ -22,11 +22,7 @@ SOURCES += main.cpp \
 
 HEADERS += \
     dialog/dialog.h \
-    interfaces/icall.h \
-    interfaces/isendaudio.h \
-    interfaces/isendpicture.h \
     interfaces/isendtext.h \
-    interfaces/ivideocall.h \
     protocol/protocol.h \
     switcher/switcher.h \
     interfaces/iauth.h \
