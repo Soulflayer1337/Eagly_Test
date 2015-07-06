@@ -30,7 +30,7 @@ void Protocol::sendText(QString &id, QString &text)
         emit notSupported(protocol->objectName());
 }
 
-void Protocol::getFriends(QList<QPair> &friends)
+void Protocol::getFriends(QList<QPair<QString, QString>> &friends)
 {
     if (friendsGetter)
         friendsGetter->getFriends(friends);
