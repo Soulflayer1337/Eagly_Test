@@ -14,19 +14,16 @@ void Dialog::startDialog()
 {
     std::cout << "Type one of the following commands:\n"
               << "1 - to send text message\n"
-              << "2 - to send audio message\n"
-              << "3 - to send picture\n"
-              << "4 - to call\n"
-              << "5 - to videocall\n"
-              << "6 - to change current protocol\n"
-              << "7 - to view the list of protocols\n"
-              << "8 - to view current used protocol\n"
+              << "2 - to get friend list\n"
+              << "3 - to change current protocol\n"
+              << "4 - to view the list of protocols\n"
+              << "5 - to view current used protocol\n"
               << "0 - to exit\n";
 
     int choise = 0;
     std::cin >> choise;
 
-    if (choise < 0 || choise > 8)
+    if (choise < 0 || choise > 5)
     {
         std::cout << "Incorrect command!\nTry Again.\n";
         return;
@@ -35,16 +32,28 @@ void Dialog::startDialog()
     if (!choise)
         emit quit();
     else if (choise == 1)
-        emit sendText();
+    {
+        std::string stdId;
+        std::cout << "Enter id of the user: ";
+        std::cin >> stdId;
+
+        std::string stdMessage;
+        std::cout << "Enter da message: ";
+        std::cin >> stdMessage;
+
+        emit sendText(QString(stdId), QString(stdMessage));
+    }
     else if (choise == 2)
-        emit sendAudio();
+    {
+        QList<QPair<QString, QString> > friendList;
+
+        emit getFriendList(friendList);
+
+        foreach (QPair friendInfo, friendList)
+            std::cout << friendInfo.first << " - " << friendInfo.second << "\n";
+
+    }
     else if (choise == 3)
-        emit sendPicture();
-    else if (choise == 4)
-        emit call();
-    else if (choise == 5)
-        emit videoCall();
-    else if (choise == 6)
     {
         std::cout << "Type the number of protocol: ";
         int number = 0;
@@ -55,7 +64,7 @@ void Dialog::startDialog()
         emit getCurrentProtocol(currentProtocol);
         std::cout << "New protocol is \"" << currentProtocol.toStdString() << "\"\n";
     }
-    else if (choise == 7)
+    else if (choise == 4)
     {
         QStringList listOfProtocols;
         emit getProtocolsList(listOfProtocols);

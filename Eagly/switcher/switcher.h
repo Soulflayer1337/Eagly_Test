@@ -16,11 +16,8 @@ signals:
     void noPlugins();
     void notSupported(QString protocolName);
 
-    void sendText();
-    void sendAudio();
-    void sendPicture();
-    void call();
-    void videoCall();
+    void sendText(QString &, QString &);
+    void getFriends(QList<QPair<QString, QString> > &);
 
 public slots:
     void getProtocolsList(QStringList &listOfProtocols);
