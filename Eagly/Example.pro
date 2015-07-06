@@ -28,6 +28,8 @@ HEADERS += \
     interfaces/isendtext.h \
     interfaces/ivideocall.h \
     protocol/protocol.h \
-    switcher/switcher.h
+    switcher/switcher.h \
+    interfaces/iauth.h \
+    interfaces/igetfriends.h
 
 CONFIG += c++11
