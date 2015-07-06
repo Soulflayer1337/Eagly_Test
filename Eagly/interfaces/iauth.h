@@ -7,7 +7,7 @@ public:
     IAuth() { }
     virtual ~IAuth() { }
 
-    virtual void auth() = 0;
+    virtual bool auth() = 0;
 };
 
 Q_DECLARE_INTERFACE(IAuth, "protocol.functional.IAuth")

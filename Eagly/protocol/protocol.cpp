@@ -1,4 +1,5 @@
 #include "protocol.h"
+#include <iostream>
 
 Protocol::Protocol(QObject *plugin, QObject *parent) : QObject(parent)
 {
@@ -30,7 +31,7 @@ void Protocol::sendText(QString &id, QString &text)
         emit notSupported(protocol->objectName());
 }
 
-void Protocol::getFriends(QList<QPair<QString, QString>> &friends)
+void Protocol::getFriends(QList<QPair<QString, QString> > &friends)
 {
     if (friendsGetter)
         friendsGetter->getFriends(friends);

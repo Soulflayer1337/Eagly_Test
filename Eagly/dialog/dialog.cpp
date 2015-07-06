@@ -41,18 +41,21 @@ void Dialog::startDialog()
         std::cout << "Enter da message: ";
         std::cin >> stdMessage;
 
-        emit sendText(QString(stdId), QString(stdMessage));
+        QString id = QString::fromStdString(stdId);
+        QString message = QString::fromStdString(stdMessage);
+
+        emit sendText(id, message);
     }
     else if (choise == 2)
     {
         QList<QPair<QString, QString> > friendList;
 
-        emit getFriendList(friendList);
+        emit getFriends(friendList);
 
         std::cout << "Friend list:\n";
 
-        foreach (QPair friendInfo, friendList)
-            std::cout << friendInfo.first << " - " << friendInfo.second << "\n";
+        for (int i = 0; i < friendList.size(); i++)
+            std::cout << friendList[i].first.toStdString() << " - " << friendList[i].second.toStdString() << "\n";
 
     }
     else if (choise == 3)
@@ -104,11 +107,8 @@ void Dialog::setSwitcher()
     connect(switcher, SIGNAL(noPlugins()), this, SIGNAL(quit()));
     connect(switcher, SIGNAL(notSupported(QString)), this, SLOT(notSupported(QString)));
 
-    connect(this, SIGNAL(sendText()), switcher, SIGNAL(sendText()));
-    connect(this, SIGNAL(sendAudio()), switcher, SIGNAL(sendAudio()));
-    connect(this, SIGNAL(sendPicture()), switcher, SIGNAL(sendPicture()));
-    connect(this, SIGNAL(call()), switcher, SIGNAL(call()));
-    connect(this, SIGNAL(videoCall()), switcher, SIGNAL(videoCall()));
+    connect(this, SIGNAL(sendText(QString&,QString&)), switcher, SIGNAL(sendText(QString&,QString&)));
+    connect(this, SIGNAL(getFriends(QList<QPair<QString,QString> >&)), switcher, SIGNAL(getFriends(QList<QPair<QString,QString> >&)));
 
     emit loadPlugins(currentDir);
 }
