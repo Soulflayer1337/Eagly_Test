@@ -4,11 +4,12 @@ Protocol::Protocol(QObject *plugin, QObject *parent) : QObject(parent)
 {
     protocol = plugin;
 
-    audioSender = qobject_cast<ISendAudio *>(protocol);
-    pictureSender = qobject_cast<ISendPicture *>(protocol);
     textSender = qobject_cast<ISendText *>(protocol);
-    caller = qobject_cast<ICall *>(protocol);
-    videoCaller = qobject_cast<IVideoCall *>(protocol);
+    friendsGetter = qobject_cast<IGetFriends *>(protocol);
+    authenticator = qobject_cast<IAuth *>(protocol);
+
+    if (!authenticator->auth())
+        std::cout << "Authentication error!\n";//emit authError();
 }
 
 Protocol::~Protocol()
@@ -21,43 +22,20 @@ QString Protocol::getProtocolName()
     return protocol->objectName();
 }
 
-void Protocol::sendAudio()
-{
-    if (audioSender)
-        audioSender->sendAudio();
-    else
-        emit notSupported(protocol->objectName());
-}
-
-void Protocol::sendPicture()
-{
-    if (pictureSender)
-        pictureSender->sendPicture();
-    else
-        emit notSupported(protocol->objectName());
-}
-
-void Protocol::sendText()
+void Protocol::sendText(QString &id, QString &text)
 {
     if (textSender)
-        textSender->sendText();
+        textSender->sendText(id, text);
     else
         emit notSupported(protocol->objectName());
 }
 
-void Protocol::call()
+void Protocol::getFriends(QList<QPair> &friends)
 {
-    if (caller)
-        caller->call();
+    if (friendsGetter)
+        friendsGetter->getFriends(friends);
     else
         emit notSupported(protocol->objectName());
 }
 
-void Protocol::videoCall()
-{
-    if (videoCaller)
-        videoCaller->videoCall();
-    else
-        emit notSupported(protocol->objectName());
-}
 
