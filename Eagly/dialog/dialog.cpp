@@ -49,6 +49,8 @@ void Dialog::startDialog()
 
         emit getFriendList(friendList);
 
+        std::cout << "Friend list:\n";
+
         foreach (QPair friendInfo, friendList)
             std::cout << friendInfo.first << " - " << friendInfo.second << "\n";
 

@@ -50,7 +50,7 @@ void Switcher::loadPlugins(QString &currentDir)
         QPluginLoader loader(dir.absoluteFilePath(fileName));
         QObject *plugin = loader.instance();
 
-        if (qobject_cast<IAuth *> plugin)
+        if (qobject_cast<IAuth *>(plugin))
             protocols << new Protocol(plugin, this);
     }
 
