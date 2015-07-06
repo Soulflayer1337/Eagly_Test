@@ -1,4 +1,5 @@
 #include "switcher.h"
+#include "interfaces/iauth.h"
 #include <QDir>
 #include <QPluginLoader>
 #include <iostream>
@@ -49,7 +50,7 @@ void Switcher::loadPlugins(QString &currentDir)
         QPluginLoader loader(dir.absoluteFilePath(fileName));
         QObject *plugin = loader.instance();
 
-        if (plugin)
+        if (qobject_cast<IAuth *>(plugin))
             protocols << new Protocol(plugin, this);
     }
 
@@ -61,23 +62,16 @@ void Switcher::loadPlugins(QString &currentDir)
 
 void Switcher::connectWith()
 {
-    connect(this, SIGNAL(sendText()), protocols[currentProtocolIndex], SLOT(sendText()));
-    connect(this, SIGNAL(sendAudio()), protocols[currentProtocolIndex], SLOT(sendAudio()));
-    connect(this, SIGNAL(sendPicture()), protocols[currentProtocolIndex], SLOT(sendPicture()));
-    connect(this, SIGNAL(call()), protocols[currentProtocolIndex], SLOT(call()));
-    connect(this, SIGNAL(videoCall()), protocols[currentProtocolIndex], SLOT(videoCall()));
+    connect(this, SIGNAL(sendText(QString&,QString&)), protocols[currentProtocolIndex], SLOT(sendText(QString&, QString&)));
+    connect(this, SIGNAL(getFriends(QList<QPair<QString,QString> >&)), protocols[currentProtocolIndex], SLOT(getFriends(QList<QPair<QString,QString> >&)));
 
     connect(protocols[currentProtocolIndex], SIGNAL(notSupported(QString)), this, SIGNAL(notSupported(QString)));
 }
 
 void Switcher::disconnectWith()
 {
-
-    disconnect(this, SIGNAL(sendText()), protocols[currentProtocolIndex], SLOT(sendText()));
-    disconnect(this, SIGNAL(sendAudio()), protocols[currentProtocolIndex], SLOT(sendAudio()));
-    disconnect(this, SIGNAL(sendPicture()), protocols[currentProtocolIndex], SLOT(sendPicture()));
-    disconnect(this, SIGNAL(call()), protocols[currentProtocolIndex], SLOT(call()));
-    disconnect(this, SIGNAL(videoCall()), protocols[currentProtocolIndex], SLOT(videoCall()));
+    disconnect(this, SIGNAL(sendText(QString&,QString&)), protocols[currentProtocolIndex], SLOT(sendText(QString&, QString&)));
+    disconnect(this, SIGNAL(getFriends(QList<QPair<QString,QString> >&)), protocols[currentProtocolIndex], SLOT(getFriends(QList<QPair<QString,QString> >&)));
 
     disconnect(protocols[currentProtocolIndex], SIGNAL(notSupported(QString)), this, SIGNAL(notSupported(QString)));
 }

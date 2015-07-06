@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include "../switcher/switcher.h"
+#include <QPair>
 
 class Dialog : public QObject
 {
@@ -14,12 +15,8 @@ signals:
     void quit();
     void changeProtocol(int index);
 
-    void sendText();
-    void sendAudio();
-    void sendPicture();
-    void call();
-    void videoCall();
-
+    void sendText(QString &, QString &);
+    void getFriends(QList<QPair<QString, QString> > &);
     void getCurrentProtocol(QString &);
     void getProtocolsList(QStringList &);
     void loadPlugins(QString &);
