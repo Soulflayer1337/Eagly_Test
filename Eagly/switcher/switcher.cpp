@@ -50,6 +50,8 @@ void Switcher::loadPlugins(QString &currentDir)
         QPluginLoader loader(dir.absoluteFilePath(fileName));
         QObject *plugin = loader.instance();
 
+        std::cout << loader.errorString().toStdString() << std::endl;
+
         if (qobject_cast<IAuth *>(plugin))
             protocols << new Protocol(plugin, this);
     }
